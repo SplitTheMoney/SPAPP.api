@@ -2,6 +2,7 @@ package ajm.spapp.api.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -26,4 +27,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public void setStatus(RequestStatus requestStatus) {
+    }
+
+    public void setManager(User manager) {
+    }
+
+    public void setDecisionDate(LocalDateTime now) {
+    }
 }
