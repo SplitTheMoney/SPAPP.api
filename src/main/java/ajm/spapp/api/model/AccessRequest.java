@@ -1,6 +1,7 @@
 package ajm.spapp.api.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,7 +9,11 @@ import java.util.Optional;
 
 @Entity
 @Table(name="AccessRequest")
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AccessRequest {
 
     @Id
@@ -48,26 +53,9 @@ public class AccessRequest {
 
     private LocalDate expirationDate;
 
-    public AccessRequest() {
-    }
-
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
 
-    }
-
-    public void setStatus(RequestStatus created) {
-
-    }
-
-    public void setManager(User manager) {
-        this.manager = manager;
-    }
-
-    public void setDecisionDate(LocalDateTime now) {
-    }
-
-    public void setRejectionReason(String reason) {
     }
 }
