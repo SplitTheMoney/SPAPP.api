@@ -18,7 +18,7 @@ public interface AccessRequestService {
 
     AccessRequest getByStatus(RequestStatus status);
 
-    User approveRequest(Long requestId, Long managerId);
+    AccessRequest approveRequest(Long requestId, Long managerId);
 
     AccessRequest rejectedRequest(Long requestId, Long ManagerId, String reason);
 }
