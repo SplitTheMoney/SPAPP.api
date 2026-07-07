@@ -1,13 +1,18 @@
 package ajm.spapp.api.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 
 @Entity
 @Table (name = "Users")
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
@@ -27,12 +32,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public void setStatus(RequestStatus requestStatus) {
-    }
-
-    public void setManager(User manager) {
-    }
-
-    public void setDecisionDate(LocalDateTime now) {
-    }
 }
