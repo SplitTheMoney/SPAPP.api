@@ -45,12 +45,12 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     }
 
     @Override
-    public AccessRequest getByStatus(RequestStatus status) {
-        return (AccessRequest) accessRequestRepository.findByStatus(status);
+    public List<AccessRequest> getByStatus(RequestStatus status) {
+        return accessRequestRepository.findByStatus(status);
     }
 
     @Override
-    public User approveRequest(Long requestId, Long managerId) {
+    public AccessRequest approveRequest(Long requestId, Long managerId) {
         User request = userRepository.findById(requestId)
                 .orElseThrow();
 
@@ -61,7 +61,7 @@ public class AccessRequestServiceImpl implements AccessRequestService {
         request.setManager(manager);
         request.setDecisionDate(LocalDateTime.now());
 
-        return userRepository.save(request);
+        return accessRequestRepository.save(request);
     }
 
     @Override

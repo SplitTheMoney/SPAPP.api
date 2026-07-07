@@ -27,6 +27,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public Long getId() {
+        return id;
+    }
+
     public void setStatus(RequestStatus requestStatus) {
     }
 
