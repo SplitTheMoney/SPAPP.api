@@ -9,6 +9,8 @@ public interface SharedFolderService {
 
     List<SharedFolder> getAllFolders();
 
+    List<SharedFolder> getFoldersByEmployee(Long employeeId);
+
     Optional<SharedFolder> getFolderById(Long id);
 
     SharedFolder createFolder(SharedFolder folder);
