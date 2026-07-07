@@ -8,6 +8,7 @@ import ajm.spapp.api.repository.SharedFolderRepository;
 import ajm.spapp.api.service.SharedFolderService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,6 +35,8 @@ public class SharedFolderServiceImpl implements SharedFolderService {
 
         Set<SharedFolder> acceptedFolder = allRequestsByEmployee.stream()
                 .filter(accessRequest -> accessRequest.getStatus() == RequestStatus.APPROVED)
+                .filter(accessRequest -> accessRequest.getExpirationDate().isAfter(LocalDate.now())
+                    || accessRequest.getExpirationDate().isEqual(LocalDate.now()))
                 .map(AccessRequest::getFolder)
                 .collect(Collectors.toSet());
 
