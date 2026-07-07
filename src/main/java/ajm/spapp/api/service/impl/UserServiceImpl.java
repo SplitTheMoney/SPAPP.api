@@ -1,11 +1,11 @@
 package ajm.spapp.api.service.impl;
 
+import ajm.spapp.api.model.Role;
 import ajm.spapp.api.model.User;
 import ajm.spapp.api.repository.UserRepository;
 import ajm.spapp.api.service.UserService;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +35,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
+    public User createUser(User user) { return userRepository.save(user); }
 
     @Override
-    public User updateUser(User user) {
-        return null;
-    }
+    public User updateUser(User user) { return userRepository.save(user); }
 
 
 
