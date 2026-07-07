@@ -49,8 +49,10 @@ public class AccessRequest {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column
     private LocalDateTime decisionDate;
 
+    @Column
     private LocalDate expirationDate;
 
     @PrePersist

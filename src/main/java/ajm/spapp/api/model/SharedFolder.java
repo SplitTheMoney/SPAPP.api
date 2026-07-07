@@ -13,7 +13,7 @@ import lombok.*;
 public class SharedFolder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "Name", nullable = false, length = 150)
     private String name;
