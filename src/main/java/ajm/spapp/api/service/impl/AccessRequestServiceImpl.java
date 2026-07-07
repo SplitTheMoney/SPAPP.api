@@ -45,8 +45,8 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     }
 
     @Override
-    public AccessRequest getByStatus(RequestStatus status) {
-        return (AccessRequest) accessRequestRepository.findByStatus(status);
+    public List<AccessRequest> getByStatus(RequestStatus status) {
+        return accessRequestRepository.findByStatus(status);
     }
 
     @Override

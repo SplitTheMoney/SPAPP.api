@@ -1,8 +1,8 @@
 package ajm.spapp.api.service;
 
+import ajm.spapp.api.model.Role;
 import ajm.spapp.api.model.User;
 
-import javax.management.relation.Role;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +12,8 @@ public interface UserService {
     Optional<User> getUserById(Long id);
 
     Optional<User> getUserByEmail(String email);
+
+    User createUser(User user);
 
     User updateUser(User user);
 

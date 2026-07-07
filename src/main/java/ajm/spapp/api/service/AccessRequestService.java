@@ -16,7 +16,7 @@ public interface AccessRequestService {
 
     List<AccessRequest> getByManagerId(Long managerId);
 
-    AccessRequest getByStatus(RequestStatus status);
+    List<AccessRequest> getByStatus(RequestStatus status);
 
     AccessRequest approveRequest(Long requestId, Long managerId);
 
