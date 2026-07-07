@@ -61,7 +61,8 @@ public class AccessRequest {
 
     }
 
-    public void setManager(Optional<User> manager) {
+    public void setManager(User manager) {
+        this.manager = manager;
     }
 
     public void setDecisionDate(LocalDateTime now) {

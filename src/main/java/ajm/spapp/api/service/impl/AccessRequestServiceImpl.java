@@ -50,9 +50,10 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     }
 
     @Override
-    public User approveRequest(Long requestId, Long managerId) {
-        User request = userRepository.findById(requestId)
-                .orElseThrow();
+    public AccessRequest approveRequest(Long requestId, Long managerId) {
+
+        AccessRequest request = accessRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
 
         User manager = userRepository.findById(managerId)
                 .orElseThrow(() -> new RuntimeException("Manager not found"));
@@ -61,7 +62,7 @@ public class AccessRequestServiceImpl implements AccessRequestService {
         request.setManager(manager);
         request.setDecisionDate(LocalDateTime.now());
 
-        return userRepository.save(request);
+        return accessRequestRepository.save(request);
     }
 
     @Override
@@ -70,7 +71,8 @@ public class AccessRequestServiceImpl implements AccessRequestService {
         AccessRequest request = accessRequestRepository.findById(requestId)
                 .orElseThrow();
 
-        Optional<User> manager = userRepository.findById(managerId);
+        User manager = userRepository.findById(managerId)
+                .orElseThrow(() -> new RuntimeException("Manager not found"));;
 
         request.setStatus(RequestStatus.REJECTED);
         request.setManager(manager);
