@@ -8,6 +8,7 @@ import ajm.spapp.api.repository.UserRepository;
 import ajm.spapp.api.service.AccessRequestService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +62,7 @@ public class AccessRequestServiceImpl implements AccessRequestService {
         request.setStatus(RequestStatus.APPROVED);
         request.setManager(manager);
         request.setDecisionDate(LocalDateTime.now());
+        request.setExpirationDate(LocalDate.now().plusYears(1));
 
         return accessRequestRepository.save(request);
     }
