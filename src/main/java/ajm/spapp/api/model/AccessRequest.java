@@ -5,10 +5,9 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Entity
-@Table(name="AccessRequest")
+@Table(name="AccessRequests")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,7 +17,7 @@ public class AccessRequest {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EmployeeId", nullable = false)

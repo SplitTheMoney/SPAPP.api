@@ -1,6 +1,6 @@
 package ajm.spapp.api.dto;
 
-public record LoginRequest(
+public record LoginRequestDTO(
         String email,
         String password
 ) {

@@ -1,13 +1,16 @@
 package ajm.spapp.api.controller;
 
+import ajm.spapp.api.dto.AccessRequestResponseDTO;
+import ajm.spapp.api.dto.ApproveRequestDTO;
+import ajm.spapp.api.dto.CreateRequestRequestDTO;
 import ajm.spapp.api.dto.RejectRequestDTO;
-import ajm.spapp.api.model.AccessRequest;
-import ajm.spapp.api.model.RequestStatus;
-import ajm.spapp.api.model.User;
+import ajm.spapp.api.model.*;
 import ajm.spapp.api.service.AccessRequestService;
 import ajm.spapp.api.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,12 +29,12 @@ public class AccessRequestController {
     }
 
     @GetMapping("")
-    public List<AccessRequest> getAllRequests() {
-        return this.accessRequestService.getAllRequests();
+    public ResponseEntity<List<AccessRequestResponseDTO>> getAllRequests(Authentication auth) {
+        return ResponseEntity.ok(accessRequestService.getAllRequests(auth.getName()));
     }
 
     @GetMapping("/employee")
-    public ResponseEntity<List<AccessRequest>> getEmployeeRequests(Authentication auth) {
+    public ResponseEntity<List<AccessRequestResponseDTO>> getEmployeeRequests(Authentication auth) {
         Optional<User> currentUser = this.userService.getUserByEmail(auth.getName());
 
         return currentUser
@@ -42,17 +45,17 @@ public class AccessRequestController {
     }
 
     @GetMapping("/manager")
-    public ResponseEntity<List<AccessRequest>> getManagerRequests(Authentication auth) {
+    public ResponseEntity<List<AccessRequestResponseDTO>> getManagerRequests(Authentication auth) {
         Optional<User> currentUser = this.userService.getUserByEmail(auth.getName());
 
         if (currentUser.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        List<AccessRequest> answeredRequests = this.accessRequestService.getByManagerId(currentUser.get().getId());
-        List<AccessRequest> unAnsweredRequests = this.accessRequestService.getByStatus(RequestStatus.CREATED);
+        List<AccessRequestResponseDTO> answeredRequests = this.accessRequestService.getByManagerId(currentUser.get().getId());
+        List<AccessRequestResponseDTO> unAnsweredRequests = this.accessRequestService.getByStatus(RequestStatus.CREATED);
 
-        List<AccessRequest> allRequests = Stream.concat(
+        List<AccessRequestResponseDTO> allRequests = Stream.concat(
                 answeredRequests.stream(),
                 unAnsweredRequests.stream()
         ).toList();
@@ -60,30 +63,20 @@ public class AccessRequestController {
         return ResponseEntity.ok(allRequests);
     }
 
-    @PostMapping("/create")
-    public AccessRequest createRequest(@RequestBody AccessRequest newRequest) {
-        return this.accessRequestService.createRequest(newRequest);
+    @PostMapping("")
+    public ResponseEntity<AccessRequestResponseDTO> createRequest(@RequestBody CreateRequestRequestDTO dto, Authentication auth) {
+        return ResponseEntity.ok(accessRequestService.createRequest(dto, auth.getName()));
     }
 
-    @PutMapping("/{id}/accept")
-    public ResponseEntity<AccessRequest> acceptRequest (@PathVariable Long id, Authentication auth) {
-        Optional<User> currentUser = this.userService.getUserByEmail(auth.getName());
-
-        return currentUser
-                .map(user -> ResponseEntity.ok(
-                        accessRequestService.approveRequest(id, user.getId())
-                ))
-                .orElse(ResponseEntity.notFound().build());
+    @PutMapping("/{id}/approve")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<AccessRequestResponseDTO> approveRequest (@PathVariable Long id, @RequestBody ApproveRequestDTO dto, Authentication auth) {
+        return ResponseEntity.ok(accessRequestService.approveRequest(id, dto, auth.getName()));
     }
 
     @PutMapping("/{id}/reject")
-    public ResponseEntity<AccessRequest> rejectRequest (@PathVariable Long id, Authentication auth, @RequestBody RejectRequestDTO dto) {
-        Optional<User> currentUser = this.userService.getUserByEmail(auth.getName());
-
-        return currentUser
-                .map(user -> ResponseEntity.ok(
-                        accessRequestService.rejectedRequest(id, user.getId(), dto.getReason())
-                ))
-                .orElse(ResponseEntity.notFound().build());
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<AccessRequestResponseDTO> rejectRequest (@PathVariable Long id, @RequestBody RejectRequestDTO dto, Authentication auth) {
+        return ResponseEntity.ok(accessRequestService.rejectedRequest(id, dto, auth.getName()));
     }
 }
