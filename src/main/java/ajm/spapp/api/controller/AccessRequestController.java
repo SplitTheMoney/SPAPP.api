@@ -63,6 +63,19 @@ public class AccessRequestController {
         return ResponseEntity.ok(allRequests);
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<List<AccessRequest>> getPendingRequests(Authentication auth) {
+        Optional<User> currentUser = this.userService.getUserByEmail(auth.getName());
+
+        if (currentUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<AccessRequest> unAnsweredRequests = this.accessRequestService.getByStatus(RequestStatus.CREATED);
+
+        return ResponseEntity.ok(unAnsweredRequests);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<AccessRequest> createRequest(@RequestBody CreateRequestDTO dto, Authentication auth) {
         System.out.println("Name: " + auth.getName());
