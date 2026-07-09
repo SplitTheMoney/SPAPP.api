@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Entity
-@Table(name="AccessRequest")
+@Table(name="AccessRequests")
 @Getter
 @Setter
 @NoArgsConstructor
