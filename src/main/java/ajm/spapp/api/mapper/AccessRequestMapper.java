@@ -20,7 +20,7 @@ public class AccessRequestMapper {
                 request.getManager() != null ? request.getManager().getId() : null,
                 request.getManager() != null ? request.getManager().getName() : null,
                 request.getFolder().getId(),
-                request.getFolder().getName(),
+                request.getFolder().getPath(),
                 request.getJustification(),
                 request.getAccessType(),
                 request.getStatus(),

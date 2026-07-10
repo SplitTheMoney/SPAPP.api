@@ -62,21 +62,6 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     }
 
     @Override
-    public List<AccessRequestResponseDTO> getByEmployeeId(Long employeeId) {
-        return accessRequestMapper.toDtoList(accessRequestRepository.findByEmployee_Id(employeeId));
-    }
-
-    @Override
-    public List<AccessRequestResponseDTO> getByManagerId(Long managerId) {
-        return accessRequestMapper.toDtoList(accessRequestRepository.findByManager_Id(managerId));
-    }
-
-    @Override
-    public List<AccessRequestResponseDTO> getByStatus(RequestStatus status) {
-        return accessRequestMapper.toDtoList(accessRequestRepository.findByStatus(status));
-    }
-
-    @Override
     public AccessRequestResponseDTO approveRequest(Long requestId, ApproveRequestDTO dto, String userEmail) {
 
         AccessRequest request = accessRequestRepository.findById(requestId)

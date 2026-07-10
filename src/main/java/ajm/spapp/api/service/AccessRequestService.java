@@ -4,7 +4,6 @@ import ajm.spapp.api.dto.AccessRequestResponseDTO;
 import ajm.spapp.api.dto.ApproveRequestDTO;
 import ajm.spapp.api.dto.CreateRequestRequestDTO;
 import ajm.spapp.api.dto.RejectRequestDTO;
-import ajm.spapp.api.model.RequestStatus;
 
 import java.util.List;
 
