@@ -18,7 +18,7 @@ public record AccessRequestResponseDTO(
         String managerName,
 
         Long folderId,
-        String folderName,
+        String folderPath,
 
         String justification,
 
