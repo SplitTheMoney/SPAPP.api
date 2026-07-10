@@ -2,7 +2,7 @@ package ajm.spapp.api.dto;
 
 import ajm.spapp.api.model.Role;
 
-public class NewUserRequest {
+public class NewUserRequestDTO {
     private String name;
     private String email;
     private String password;

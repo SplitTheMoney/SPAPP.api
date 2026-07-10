@@ -1,7 +1,11 @@
 package ajm.spapp.api.controller;
 
 import ajm.spapp.api.dto.*;
+import ajm.spapp.api.model.User;
+import ajm.spapp.api.repository.UserRepository;
 import ajm.spapp.api.security.JwtService;
+import ajm.spapp.api.service.AuthService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,35 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthenticationManager authManager;
-    private final JwtService jwtService;
+    private AuthService authService;
 
-    public AuthController(
-            AuthenticationManager authManager,
-            JwtService jwtService) {
-
-        this.authManager = authManager;
-        this.jwtService = jwtService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/login")
-    public LoginResponse login(
-            @RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) {
 
-        Authentication authentication =
-                authManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                request.email(),
-                                request.password()
-                        )
-                );
-
-        UserDetails user =
-                (UserDetails) authentication.getPrincipal();
-
-        String token =
-                jwtService.generateToken(user);
-
-        return new LoginResponse(token);
+        return ResponseEntity.ok(authService.Login(dto));
     }
 }

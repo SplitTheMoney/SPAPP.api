@@ -1,6 +1,6 @@
 package ajm.spapp.api.controller;
 
-import ajm.spapp.api.dto.NewUserRequest;
+import ajm.spapp.api.dto.NewUserRequestDTO;
 import ajm.spapp.api.model.Role;
 import ajm.spapp.api.model.User;
 import ajm.spapp.api.service.UserService;
@@ -23,13 +23,13 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public User createUser(@RequestBody NewUserRequest newUserRequest) {
+    public User createUser(@RequestBody NewUserRequestDTO newUserRequestDTO) {
         User newUser = new User();
 
-        newUser.setName(newUserRequest.getName());
-        newUser.setEmail(newUserRequest.getEmail());
-        newUser.setPasswordHash(passwordEncoder.encode(newUserRequest.getPassword()));
-        newUser.setRole(newUserRequest.getRole());
+        newUser.setName(newUserRequestDTO.getName());
+        newUser.setEmail(newUserRequestDTO.getEmail());
+        newUser.setPasswordHash(passwordEncoder.encode(newUserRequestDTO.getPassword()));
+        newUser.setRole(newUserRequestDTO.getRole());
 
         return userService.createUser(newUser);
     }
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody NewUserRequest newUserRequest) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody NewUserRequestDTO newUserRequestDTO) {
         Optional<User> oldUser = userService.getUserById(id);
 
         if (oldUser.isEmpty()) {
@@ -56,10 +56,10 @@ public class UserController {
 
         User userToUpdate = oldUser.get();
 
-        userToUpdate.setName(newUserRequest.getName());
-        userToUpdate.setEmail(newUserRequest.getEmail());
-        userToUpdate.setPasswordHash(passwordEncoder.encode(newUserRequest.getPassword()));
-        userToUpdate.setRole(newUserRequest.getRole());
+        userToUpdate.setName(newUserRequestDTO.getName());
+        userToUpdate.setEmail(newUserRequestDTO.getEmail());
+        userToUpdate.setPasswordHash(passwordEncoder.encode(newUserRequestDTO.getPassword()));
+        userToUpdate.setRole(newUserRequestDTO.getRole());
 
         return ResponseEntity.ok(userService.updateUser(userToUpdate));
     }

@@ -1,24 +1,22 @@
 package ajm.spapp.api.service;
 
-import ajm.spapp.api.model.AccessRequest;
+import ajm.spapp.api.dto.AccessRequestResponseDTO;
+import ajm.spapp.api.dto.ApproveRequestDTO;
+import ajm.spapp.api.dto.CreateRequestRequestDTO;
+import ajm.spapp.api.dto.RejectRequestDTO;
 import ajm.spapp.api.model.RequestStatus;
-import ajm.spapp.api.model.User;
 
 import java.util.List;
 
 public interface AccessRequestService {
 
-    AccessRequest createRequest(AccessRequest request);
+    AccessRequestResponseDTO createRequest(CreateRequestRequestDTO dto, String userEmail);
 
-    List<AccessRequest> getAllRequests();
+    List<AccessRequestResponseDTO> getAllRequests(String userEmail);
 
-    List<AccessRequest> getByEmployeeId(Long employeeId);
+    List<AccessRequestResponseDTO> getPendingRequests();
 
-    List<AccessRequest> getByManagerId(Long managerId);
+    AccessRequestResponseDTO approveRequest(Long requestId, ApproveRequestDTO dto, String userEmail);
 
-    List<AccessRequest> getByStatus(RequestStatus status);
-
-    AccessRequest approveRequest(Long requestId, Long managerId);
-
-    AccessRequest rejectedRequest(Long requestId, Long ManagerId, String reason);
+    AccessRequestResponseDTO rejectRequest(Long requestId, RejectRequestDTO dto, String userEmail);
 }
