@@ -92,7 +92,7 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     }
 
     @Override
-    public AccessRequestResponseDTO rejectedRequest(Long requestId, RejectRequestDTO dto, String userEmail) {
+    public AccessRequestResponseDTO rejectRequest(Long requestId, RejectRequestDTO dto, String userEmail) {
 
         AccessRequest request = accessRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RuntimeException("Request not found"));

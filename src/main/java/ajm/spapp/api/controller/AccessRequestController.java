@@ -10,7 +10,6 @@ import ajm.spapp.api.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -69,14 +68,14 @@ public class AccessRequestController {
     }
 
     @PutMapping("/{id}/approve")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')||hasRole('MANAGER')")
     public ResponseEntity<AccessRequestResponseDTO> approveRequest (@PathVariable Long id, @RequestBody ApproveRequestDTO dto, Authentication auth) {
         return ResponseEntity.ok(accessRequestService.approveRequest(id, dto, auth.getName()));
     }
 
     @PutMapping("/{id}/reject")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')||hasRole('MANAGER')")
     public ResponseEntity<AccessRequestResponseDTO> rejectRequest (@PathVariable Long id, @RequestBody RejectRequestDTO dto, Authentication auth) {
-        return ResponseEntity.ok(accessRequestService.rejectedRequest(id, dto, auth.getName()));
+        return ResponseEntity.ok(accessRequestService.rejectRequest(id, dto, auth.getName()));
     }
 }
