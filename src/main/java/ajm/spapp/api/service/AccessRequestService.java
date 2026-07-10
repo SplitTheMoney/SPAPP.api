@@ -14,11 +14,7 @@ public interface AccessRequestService {
 
     List<AccessRequestResponseDTO> getAllRequests(String userEmail);
 
-    List<AccessRequestResponseDTO> getByEmployeeId(Long employeeId);
-
-    List<AccessRequestResponseDTO> getByManagerId(Long managerId);
-
-    List<AccessRequestResponseDTO> getByStatus(RequestStatus status);
+    List<AccessRequestResponseDTO> getPendingRequests();
 
     AccessRequestResponseDTO approveRequest(Long requestId, ApproveRequestDTO dto, String userEmail);
 

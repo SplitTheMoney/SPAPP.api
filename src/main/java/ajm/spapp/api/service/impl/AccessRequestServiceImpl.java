@@ -12,7 +12,6 @@ import ajm.spapp.api.repository.UserRepository;
 import ajm.spapp.api.service.AccessRequestService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,6 +54,11 @@ public class AccessRequestServiceImpl implements AccessRequestService {
         else requests = accessRequestRepository.findAll();
 
         return accessRequestMapper.toDtoList(requests);
+    }
+
+    @Override
+    public List<AccessRequestResponseDTO> getPendingRequests() {
+        return accessRequestMapper.toDtoList(accessRequestRepository.findByStatus(RequestStatus.CREATED));
     }
 
     @Override
