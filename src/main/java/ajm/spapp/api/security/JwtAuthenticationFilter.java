@@ -1,5 +1,6 @@
 package ajm.spapp.api.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,37 +46,70 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authHeader.substring(7);
+        if (request.getServletPath().startsWith("/auth")) {
 
-        String username =
-                jwtService.extractUsername(token);
+            filterChain.doFilter(request, response);
 
-        if (username != null &&
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication() == null) {
-
-            UserDetails userDetails =
-                    userDetailsService
-                            .loadUserByUsername(username);
-
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-
-            authToken.setDetails(
-                    new WebAuthenticationDetailsSource()
-                            .buildDetails(request)
-            );
-
-            SecurityContextHolder
-                    .getContext()
-                    .setAuthentication(authToken);
+            return;
         }
 
-        filterChain.doFilter(request, response);
+        String token = authHeader.substring(7);
+
+        try {
+
+            String username =
+                    jwtService.extractUsername(token);
+
+            if (username != null &&
+                    SecurityContextHolder
+                            .getContext()
+                            .getAuthentication() == null) {
+
+                UserDetails userDetails =
+                        userDetailsService
+                                .loadUserByUsername(username);
+
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource()
+                                .buildDetails(request)
+                );
+
+                SecurityContextHolder
+                        .getContext()
+                        .setAuthentication(authToken);
+            }
+
+
+            filterChain.doFilter(request, response);
+
+        }
+        catch (ExpiredJwtException ex) {
+
+            response.setStatus(
+                    HttpServletResponse.SC_UNAUTHORIZED
+            );
+
+            response.setContentType(
+                    "application/json"
+            );
+
+            response.getWriter().write(
+                    """
+                    {
+                      "message":"Token expired"
+                    }
+                    """
+            );
+
+            return;
+        }
+
     }
 }
