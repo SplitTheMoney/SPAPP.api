@@ -6,6 +6,7 @@ import ajm.spapp.api.dto.CreateRequestRequestDTO;
 import ajm.spapp.api.dto.RejectRequestDTO;
 import ajm.spapp.api.model.*;
 import ajm.spapp.api.service.AccessRequestService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -28,7 +29,7 @@ public class AccessRequestController {
     }
 
     @PostMapping("")
-    public ResponseEntity<AccessRequestResponseDTO> createRequest(@RequestBody CreateRequestRequestDTO dto, Authentication auth) {
+    public ResponseEntity<AccessRequestResponseDTO> createRequest(@Valid @RequestBody CreateRequestRequestDTO dto, Authentication auth) {
         return ResponseEntity.ok(accessRequestService.createRequest(dto, auth.getName()));
     }
   
@@ -40,13 +41,13 @@ public class AccessRequestController {
 
     @PutMapping("/{id}/approve")
     @PreAuthorize("hasRole('ADMIN')||hasRole('MANAGER')")
-    public ResponseEntity<AccessRequestResponseDTO> approveRequest (@PathVariable Long id, @RequestBody ApproveRequestDTO dto, Authentication auth) {
+    public ResponseEntity<AccessRequestResponseDTO> approveRequest (@PathVariable Long id, @Valid @RequestBody ApproveRequestDTO dto, Authentication auth) {
         return ResponseEntity.ok(accessRequestService.approveRequest(id, dto, auth.getName()));
     }
 
     @PutMapping("/{id}/reject")
     @PreAuthorize("hasRole('ADMIN')||hasRole('MANAGER')")
-    public ResponseEntity<AccessRequestResponseDTO> rejectRequest (@PathVariable Long id, @RequestBody RejectRequestDTO dto, Authentication auth) {
+    public ResponseEntity<AccessRequestResponseDTO> rejectRequest (@PathVariable Long id, @Valid @RequestBody RejectRequestDTO dto, Authentication auth) {
         return ResponseEntity.ok(accessRequestService.rejectRequest(id, dto, auth.getName()));
     }
 }

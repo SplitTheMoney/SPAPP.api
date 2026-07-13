@@ -5,6 +5,7 @@ import ajm.spapp.api.model.User;
 import ajm.spapp.api.repository.UserRepository;
 import ajm.spapp.api.security.JwtService;
 import ajm.spapp.api.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -22,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO dto) {
 
         return ResponseEntity.ok(authService.Login(dto));
     }
