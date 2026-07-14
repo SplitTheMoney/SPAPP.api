@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/folder")
+@RequestMapping("/folders")
 public class SharedFolderController {
     private final SharedFolderService sharedFolderService;
     private final UserService userService;
