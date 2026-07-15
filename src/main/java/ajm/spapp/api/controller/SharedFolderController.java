@@ -1,8 +1,8 @@
 package ajm.spapp.api.controller;
 
+import ajm.spapp.api.dto.SharedFolderResponseDTO;
 import ajm.spapp.api.model.SharedFolder;
 import ajm.spapp.api.model.User;
-import ajm.spapp.api.service.AccessRequestService;
 import ajm.spapp.api.service.SharedFolderService;
 import ajm.spapp.api.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/folder")
+@RequestMapping("/folders")
 public class SharedFolderController {
     private final SharedFolderService sharedFolderService;
     private final UserService userService;
@@ -26,8 +26,8 @@ public class SharedFolderController {
     }
 
     @GetMapping("")
-    public List<SharedFolder> getAllFolders() {
-        return this.sharedFolderService.getAllFolders();
+    public ResponseEntity<List<SharedFolderResponseDTO>> getAllFolders() {
+        return ResponseEntity.ok(sharedFolderService.getAllFolders());
     }
 
     @GetMapping("/employee")

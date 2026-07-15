@@ -1,9 +1,11 @@
 package ajm.spapp.api.dto;
 
-import ajm.spapp.api.model.AccessType;
+import jakarta.validation.constraints.*;
 
 public record CreateRequestRequestDTO(
         Long folderId,
+        @NotNull(message = "Must type a justification")
         String justification,
-        AccessType accessType
+        @NotNull(message = "Must specify the access type")
+        String accessType
 ) {}

@@ -45,7 +45,7 @@ public class AccessRequestMapper {
         request.setFolder(folder);
         request.setJustification(dto.justification());
 
-        request.setAccessType(dto.accessType());
+        request.setAccessType(AccessType.valueOf(dto.accessType()));
 
         request.setStatus(RequestStatus.CREATED);
 
