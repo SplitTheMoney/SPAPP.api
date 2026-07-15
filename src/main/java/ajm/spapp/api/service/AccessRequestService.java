@@ -4,9 +4,6 @@ import ajm.spapp.api.dto.AccessRequestResponseDTO;
 import ajm.spapp.api.dto.ApproveRequestDTO;
 import ajm.spapp.api.dto.CreateRequestRequestDTO;
 import ajm.spapp.api.dto.RejectRequestDTO;
-import ajm.spapp.api.model.AccessRequest;
-import ajm.spapp.api.model.RequestStatus;
-import ajm.spapp.api.model.User;
 
 import java.util.List;
 
@@ -16,13 +13,9 @@ public interface AccessRequestService {
 
     List<AccessRequestResponseDTO> getAllRequests(String userEmail);
 
-    List<AccessRequestResponseDTO> getByEmployeeId(Long employeeId);
-
-    List<AccessRequestResponseDTO> getByManagerId(Long managerId);
-
-    List<AccessRequestResponseDTO> getByStatus(RequestStatus status);
+    List<AccessRequestResponseDTO> getPendingRequests();
 
     AccessRequestResponseDTO approveRequest(Long requestId, ApproveRequestDTO dto, String userEmail);
 
-    AccessRequestResponseDTO rejectedRequest(Long requestId, RejectRequestDTO dto, String userEmail);
+    AccessRequestResponseDTO rejectRequest(Long requestId, RejectRequestDTO dto, String userEmail);
 }

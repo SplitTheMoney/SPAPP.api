@@ -4,6 +4,8 @@ import ajm.spapp.api.dto.AccessRequestResponseDTO;
 import ajm.spapp.api.dto.ApproveRequestDTO;
 import ajm.spapp.api.dto.CreateRequestRequestDTO;
 import ajm.spapp.api.dto.RejectRequestDTO;
+import ajm.spapp.api.exception.BusinessException;
+import ajm.spapp.api.exception.ResourceNotFoundException;
 import ajm.spapp.api.mapper.AccessRequestMapper;
 import ajm.spapp.api.model.*;
 import ajm.spapp.api.repository.AccessRequestRepository;
@@ -34,10 +36,10 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     public AccessRequestResponseDTO createRequest(CreateRequestRequestDTO dto, String userEmail) {
 
         SharedFolder folder = sharedFolderRepository.findById(dto.folderId())
-                .orElseThrow(() -> new RuntimeException("Folder not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Folder not found"));
 
         User employee = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found"));
 
         AccessRequest request = accessRequestMapper.toEntity(dto, employee, folder);
         accessRequestRepository.save(request);
@@ -47,7 +49,7 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     @Override
     public List<AccessRequestResponseDTO> getAllRequests(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         List<AccessRequest> requests;
         if (user.getRole() == Role.EMPLOYEE) requests = accessRequestRepository.findByEmployee(user);
@@ -57,30 +59,20 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     }
 
     @Override
-    public List<AccessRequestResponseDTO> getByEmployeeId(Long employeeId) {
-        return accessRequestMapper.toDtoList(accessRequestRepository.findByEmployee_Id(employeeId));
-    }
-
-    @Override
-    public List<AccessRequestResponseDTO> getByManagerId(Long managerId) {
-        return accessRequestMapper.toDtoList(accessRequestRepository.findByManager_Id(managerId));
-    }
-
-    @Override
-    public List<AccessRequestResponseDTO> getByStatus(RequestStatus status) {
-        return accessRequestMapper.toDtoList(accessRequestRepository.findByStatus(status));
+    public List<AccessRequestResponseDTO> getPendingRequests() {
+        return accessRequestMapper.toDtoList(accessRequestRepository.findByStatus(RequestStatus.CREATED));
     }
 
     @Override
     public AccessRequestResponseDTO approveRequest(Long requestId, ApproveRequestDTO dto, String userEmail) {
 
         AccessRequest request = accessRequestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
 
-        if (request.getStatus() != RequestStatus.CREATED)   throw new RuntimeException("Request has already been answered");
+        if (request.getStatus() != RequestStatus.CREATED)   throw new BusinessException("Request has already been answered");
 
         User manager = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("Manager not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Manager not found"));
 
         request.setStatus(RequestStatus.APPROVED);
         request.setManager(manager);
@@ -92,12 +84,12 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     }
 
     @Override
-    public AccessRequestResponseDTO rejectedRequest(Long requestId, RejectRequestDTO dto, String userEmail) {
+    public AccessRequestResponseDTO rejectRequest(Long requestId, RejectRequestDTO dto, String userEmail) {
 
         AccessRequest request = accessRequestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found"));
 
-        if (request.getStatus() != RequestStatus.CREATED)   throw new RuntimeException("Request has already been answered");
+        if (request.getStatus() != RequestStatus.CREATED)   throw new BusinessException("Request has already been answered");
 
         User manager = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("Manager not found"));

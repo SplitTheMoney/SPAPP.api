@@ -4,6 +4,7 @@ import ajm.spapp.api.dto.NewUserRequestDTO;
 import ajm.spapp.api.model.Role;
 import ajm.spapp.api.model.User;
 import ajm.spapp.api.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public User createUser(@RequestBody NewUserRequestDTO newUserRequestDTO) {
+    public User createUser(@Valid @RequestBody NewUserRequestDTO newUserRequestDTO) {
         User newUser = new User();
 
         newUser.setName(newUserRequestDTO.getName());
