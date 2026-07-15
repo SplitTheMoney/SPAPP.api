@@ -1,13 +1,11 @@
 package ajm.spapp.api.dto;
 
-
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
 public record ApproveRequestDTO(
-        @Future
-        @NotNull
+        @NotNull(message = "Expiration date is required")
+        @Future(message = "Expiration date must be future")
         LocalDate expirationDate
 ) {}

@@ -1,5 +1,7 @@
 package ajm.spapp.api.service.impl;
 
+import ajm.spapp.api.dto.SharedFolderResponseDTO;
+import ajm.spapp.api.mapper.SharedFolderMapper;
 import ajm.spapp.api.model.AccessRequest;
 import ajm.spapp.api.model.RequestStatus;
 import ajm.spapp.api.model.SharedFolder;
@@ -18,15 +20,17 @@ import java.util.stream.Collectors;
 public class SharedFolderServiceImpl implements SharedFolderService {
     private final SharedFolderRepository sharedFolderRepository;
     private final AccessRequestRepository accessRequestRepository;
+    private final SharedFolderMapper sharedFolderMapper;
 
-    public SharedFolderServiceImpl(SharedFolderRepository sharedFolderRepository, AccessRequestRepository accessRequestRepository) {
+    public SharedFolderServiceImpl(SharedFolderRepository sharedFolderRepository, AccessRequestRepository accessRequestRepository, SharedFolderMapper sharedFolderMapper) {
         this.sharedFolderRepository = sharedFolderRepository;
         this.accessRequestRepository = accessRequestRepository;
+        this.sharedFolderMapper = sharedFolderMapper;
     }
 
     @Override
-    public List<SharedFolder> getAllFolders() {
-        return sharedFolderRepository.findAll();
+    public List<SharedFolderResponseDTO> getAllFolders() {
+        return sharedFolderMapper.toDtoList(sharedFolderRepository.findAll());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ajm.spapp.api.service;
 
+import ajm.spapp.api.dto.SharedFolderResponseDTO;
 import ajm.spapp.api.model.SharedFolder;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Optional;
 
 public interface SharedFolderService {
 
-    List<SharedFolder> getAllFolders();
+    List<SharedFolderResponseDTO> getAllFolders();
 
     List<SharedFolder> getFoldersByEmployee(Long employeeId);
 

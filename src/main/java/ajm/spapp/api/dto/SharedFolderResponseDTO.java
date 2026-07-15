@@ -1,4 +1,9 @@
 package ajm.spapp.api.dto;
 
-public class SharedFolderResponseDTO {
-}
+public record SharedFolderResponseDTO(
+        Long id,
+        String name,
+        String path,
+        String description
+)
+{ }
